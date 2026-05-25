@@ -25,10 +25,7 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Set public npm registry
-        run: npm config set registry https://registry.npmjs.org/
-
-      - run: npm ci
+      - run: npm ci --include=dev --legacy-peer-deps
 
       - run: npm run build
 
