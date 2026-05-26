@@ -17,15 +17,13 @@ interface SceneSelectorProps {
 export default function SceneSelector({ onClose, onSelect }: SceneSelectorProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center animate-fade-in">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-ink/30 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-lg bg-cream rounded-t-3xl shadow-2xl animate-slide-in-right p-6 pb-10">
+      <div className="relative w-full max-w-lg bg-white rounded-t-3xl shadow-2xl p-6 pb-10">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-bold text-ink">选择穿搭场景</h2>
-          <button onClick={onClose} className="p-2 hover:bg-sand/30 rounded-xl transition-colors">
-            <X size={20} className="text-muted-foreground" />
+          <h2 className="text-lg font-bold text-gray-900">选择穿搭场景</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+            <X size={20} className="text-gray-400" />
           </button>
         </div>
 
@@ -34,13 +32,13 @@ export default function SceneSelector({ onClose, onSelect }: SceneSelectorProps)
             <button
               key={id}
               onClick={() => onSelect(id)}
-              className="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl ring-1 ring-sand/30 outfit-card-lift group"
+              className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-2xl border border-gray-100 card-hover"
             >
-              <div className="p-2 bg-forest/8 rounded-xl group-hover:bg-forest/15 transition-colors">
-                <Icon size={22} className="text-forest" />
+              <div className="p-2 bg-blue-50 rounded-xl">
+                <Icon size={22} className="text-blue-600" />
               </div>
-              <span className="text-sm font-semibold text-ink">{name}</span>
-              <span className="text-xs text-muted-foreground text-center">{desc}</span>
+              <span className="text-sm font-semibold text-gray-700">{name}</span>
+              <span className="text-xs text-gray-400 text-center">{desc}</span>
             </button>
           ))}
         </div>

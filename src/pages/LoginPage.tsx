@@ -56,27 +56,22 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream max-w-lg mx-auto flex flex-col">
-      {/* Header illustration area */}
-      <div className="relative h-[280px] gradient-mesh flex items-center justify-center overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute w-32 h-32 bg-forest/8 blob-1 top-8 -left-8 animate-float" />
-        <div className="absolute w-24 h-24 bg-coral/10 blob-2 top-16 right-8 animate-float delay-200" />
-        <div className="absolute w-16 h-16 bg-sand/30 blob-1 bottom-12 left-16 animate-float delay-300" />
-
-        <div className="text-center z-10 animate-fade-up">
-          <div className="w-16 h-16 bg-forest rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg shadow-forest/20">
-            <span className="font-handwritten text-3xl text-white">简搭</span>
+    <div className="min-h-screen bg-white max-w-lg mx-auto flex flex-col">
+      {/* Header */}
+      <div className="h-[260px] bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-14 h-14 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg shadow-blue-600/20">
+            <span className="font-handwritten text-2xl text-white">简搭</span>
           </div>
-          <h1 className="text-2xl font-bold text-ink tracking-tight">简搭衣橱</h1>
-          <p className="text-sm text-muted-foreground mt-2">盘活你的每一件衣服，每天轻松穿出彩</p>
+          <h1 className="text-2xl font-bold text-gray-900">简搭衣橱</h1>
+          <p className="text-sm text-gray-400 mt-2">盘活你的每一件衣服，每天轻松穿出彩</p>
         </div>
       </div>
 
       {/* Login form */}
-      <div className="flex-1 px-5 pt-8 pb-6">
+      <div className="flex-1 px-5 pt-6 pb-6 -mt-4">
         {/* Method tabs */}
-        <div className="flex gap-2 mb-6 animate-fade-up delay-100">
+        <div className="flex gap-2 mb-5 bg-gray-50 p-1 rounded-xl">
           {([
             { method: 'phone' as LoginMethod, label: '手机号', icon: Phone },
             { method: 'wechat' as LoginMethod, label: '微信', icon: MessageSquare },
@@ -85,10 +80,10 @@ export default function LoginPage() {
             <button
               key={method}
               onClick={() => setActiveMethod(method)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeMethod === method
-                  ? 'bg-forest text-white shadow-sm'
-                  : 'bg-white ring-1 ring-sand/30 text-ink hover:bg-forest/5'
+                  ? 'bg-white text-blue-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               <Icon size={16} />
@@ -99,36 +94,36 @@ export default function LoginPage() {
 
         {/* Phone login form */}
         {activeMethod === 'phone' && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="bg-white rounded-xl ring-1 ring-sand/30 px-4 py-3 flex items-center gap-2">
-              <Phone size={16} className="text-muted-foreground" />
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl border border-gray-200 px-4 py-3 flex items-center gap-2">
+              <Phone size={16} className="text-gray-400" />
               <input
                 type="tel"
                 placeholder="请输入手机号"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 11))}
-                className="text-sm text-ink placeholder-muted-foreground bg-transparent outline-none flex-1"
+                className="text-sm text-gray-900 placeholder-gray-400 bg-transparent outline-none flex-1"
                 maxLength={11}
               />
             </div>
 
-            <div className="bg-white rounded-xl ring-1 ring-sand/30 px-4 py-3 flex items-center gap-2">
-              <Shield size={16} className="text-muted-foreground" />
+            <div className="bg-gray-50 rounded-xl border border-gray-200 px-4 py-3 flex items-center gap-2">
+              <Shield size={16} className="text-gray-400" />
               <input
                 type="text"
                 placeholder="验证码"
                 value={verifyCode}
                 onChange={(e) => setVerifyCode(e.target.value.slice(0, 6))}
-                className="text-sm text-ink placeholder-muted-foreground bg-transparent outline-none flex-1"
+                className="text-sm text-gray-900 placeholder-gray-400 bg-transparent outline-none flex-1"
                 maxLength={6}
               />
               <button
                 onClick={sendCode}
                 disabled={codeCountdown > 0 || phone.length < 11}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
                   codeCountdown > 0 || phone.length < 11
-                    ? 'bg-sand/30 text-muted-foreground'
-                    : 'bg-forest text-white hover:bg-forest-deep'
+                    ? 'bg-gray-200 text-gray-400'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                 }`}
               >
                 {codeCountdown > 0 ? `${codeCountdown}s` : '获取验证码'}
@@ -138,10 +133,10 @@ export default function LoginPage() {
             <button
               onClick={handleLogin}
               disabled={!agreed || phone.length < 11}
-              className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`w-full py-3 rounded-xl text-sm font-semibold transition-all ${
                 agreed && phone.length >= 11
-                  ? 'bg-forest text-white hover:bg-forest-deep'
-                  : 'bg-sand/30 text-muted-foreground'
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-100 text-gray-400'
               }`}
             >
               登录
@@ -151,20 +146,20 @@ export default function LoginPage() {
 
         {/* Wechat login */}
         {activeMethod === 'wechat' && (
-          <div className="animate-fade-in flex flex-col items-center gap-5 py-8">
-            <div className="w-56 h-56 bg-white rounded-2xl ring-1 ring-sand/30 flex flex-col items-center justify-center gap-3">
-              <MessageSquare size={48} className="text-[#07C160]" />
-              <p className="text-sm text-ink font-medium">微信快捷登录</p>
-              <p className="text-xs text-muted-foreground">一键授权，无需输入密码</p>
+          <div className="flex flex-col items-center gap-4 py-6">
+            <div className="w-48 h-48 bg-gray-50 rounded-2xl border border-gray-200 flex flex-col items-center justify-center gap-2">
+              <MessageSquare size={40} className="text-[#07C160]" />
+              <p className="text-sm text-gray-600 font-medium">微信快捷登录</p>
+              <p className="text-xs text-gray-400">一键授权，无需输入密码</p>
             </div>
 
             <button
               onClick={handleWechatLogin}
               disabled={!agreed}
-              className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`w-full py-3 rounded-xl text-sm font-semibold transition-all ${
                 agreed
                   ? 'bg-[#07C160] text-white hover:bg-[#06AD56]'
-                  : 'bg-sand/30 text-muted-foreground'
+                  : 'bg-gray-100 text-gray-400'
               }`}
             >
               微信一键登录
@@ -174,39 +169,39 @@ export default function LoginPage() {
 
         {/* Email login */}
         {activeMethod === 'email' && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="bg-white rounded-xl ring-1 ring-sand/30 px-4 py-3 flex items-center gap-2">
-              <Mail size={16} className="text-muted-foreground" />
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl border border-gray-200 px-4 py-3 flex items-center gap-2">
+              <Mail size={16} className="text-gray-400" />
               <input
                 type="email"
                 placeholder="请输入邮箱地址"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="text-sm text-ink placeholder-muted-foreground bg-transparent outline-none flex-1"
+                className="text-sm text-gray-900 placeholder-gray-400 bg-transparent outline-none flex-1"
               />
             </div>
 
-            <div className="bg-white rounded-xl ring-1 ring-sand/30 px-4 py-3 flex items-center gap-2">
-              {showPassword ? <Eye size={16} className="text-muted-foreground" /> : <EyeOff size={16} className="text-muted-foreground" />}
+            <div className="bg-gray-50 rounded-xl border border-gray-200 px-4 py-3 flex items-center gap-2">
+              {showPassword ? <Eye size={16} className="text-gray-400" /> : <EyeOff size={16} className="text-gray-400" />}
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="请输入密码"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="text-sm text-ink placeholder-muted-foreground bg-transparent outline-none flex-1"
+                className="text-sm text-gray-900 placeholder-gray-400 bg-transparent outline-none flex-1"
               />
-              <button onClick={() => setShowPassword(!showPassword)} className="p-1 hover:bg-sand/20 rounded-lg transition-colors">
-                {showPassword ? <EyeOff size={14} className="text-muted-foreground" /> : <Eye size={14} className="text-muted-foreground" />}
+              <button onClick={() => setShowPassword(!showPassword)} className="p-1 hover:bg-gray-200 rounded-lg">
+                {showPassword ? <EyeOff size={14} className="text-gray-400" /> : <Eye size={14} className="text-gray-400" />}
               </button>
             </div>
 
             <button
               onClick={handleLogin}
               disabled={!agreed || !email || !password}
-              className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`w-full py-3 rounded-xl text-sm font-semibold transition-all ${
                 agreed && email && password
-                  ? 'bg-forest text-white hover:bg-forest-deep'
-                  : 'bg-sand/30 text-muted-foreground'
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-100 text-gray-400'
               }`}
             >
               登录
@@ -215,36 +210,33 @@ export default function LoginPage() {
         )}
 
         {/* Agreement */}
-        <div className="mt-5 flex items-center gap-2 animate-fade-up delay-200">
+        <div className="mt-5 flex items-center gap-2">
           <button
             onClick={() => setAgreed(!agreed)}
-            className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-300 ${
+            className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
               agreed
-                ? 'bg-forest border-forest text-white'
-                : 'border-sand/50 bg-white'
+                ? 'bg-blue-600 border-blue-600 text-white'
+                : 'border-gray-300 bg-white'
             }`}
           >
             {agreed && <span className="text-xs">✓</span>}
           </button>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-gray-400">
             我已阅读并同意
-            <span className="text-forest font-medium">《用户协议》</span>
+            <span className="text-blue-600 font-medium">《用户协议》</span>
             和
-            <span className="text-forest font-medium">《隐私政策》</span>
+            <span className="text-blue-600 font-medium">《隐私政策》</span>
           </p>
         </div>
 
         {/* Guest entry */}
-        <div className="mt-6 text-center animate-fade-up delay-300">
+        <div className="mt-6 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px bg-sand/30 flex-1" />
-            <span className="text-xs text-muted-foreground">或者</span>
-            <div className="h-px bg-sand/30 flex-1" />
+            <div className="h-px bg-gray-200 flex-1" />
+            <span className="text-xs text-gray-400">或者</span>
+            <div className="h-px bg-gray-200 flex-1" />
           </div>
-          <button
-            onClick={handleGuest}
-            className="text-sm text-muted-foreground hover:text-ink transition-colors"
-          >
+          <button onClick={handleGuest} className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
             游客体验 → 仅可浏览首页Demo和发现页
           </button>
         </div>

@@ -56,9 +56,7 @@ const STEPS = [
 export default function OnboardingPage() {
   const { completeOnboarding } = useAuthStore()
   const [currentStep, setCurrentStep] = useState(0)
-  const [selections, setSelections] = useState<Record<string, string | string[]>>({
-    scene: [],
-  })
+  const [selections, setSelections] = useState<Record<string, string | string[]>>({ scene: [] })
   const [showSkipConfirm, setShowSkipConfirm] = useState(false)
 
   const step = STEPS[currentStep]
@@ -67,9 +65,7 @@ export default function OnboardingPage() {
   const handleSelect = (optionId: string) => {
     if (step.multiSelect) {
       const current = (selections[step.id] as string[]) || []
-      const updated = current.includes(optionId)
-        ? current.filter((id: string) => id !== optionId)
-        : [...current, optionId]
+      const updated = current.includes(optionId) ? current.filter((id) => id !== optionId) : [...current, optionId]
       setSelections({ ...selections, [step.id]: updated })
     } else {
       setSelections({ ...selections, [step.id]: optionId })
@@ -77,122 +73,72 @@ export default function OnboardingPage() {
   }
 
   const isSelected = (optionId: string) => {
-    if (step.multiSelect) {
-      return ((selections[step.id] as string[]) || []).includes(optionId)
-    }
+    if (step.multiSelect) return ((selections[step.id] as string[]) || []).includes(optionId)
     return selections[step.id] === optionId
   }
 
-  const handleNext = () => {
-    if (currentStep < STEPS.length - 1) {
-      setCurrentStep(currentStep + 1)
-    }
-  }
-
   const handleFinish = () => {
-    completeOnboarding({
-      bodyType: selections.body as string || '',
-      skinTone: selections.skin as string || '',
-      preference: selections.style as string || '',
-      scenes: (selections.scene as string[]) || [],
-    })
-    window.location.href = '/cvonline/'
+    completeOnboarding({ bodyType: selections.body as string || '', skinTone: selections.skin as string || '', preference: selections.style as string || '', scenes: (selections.scene as string[]) || [] })
+    window.location.href = '/jianda-wardrobe/'
   }
 
   const handleSkip = () => {
     completeOnboarding({})
-    window.location.href = '/cvonline/'
+    window.location.href = '/jianda-wardrobe/'
   }
 
   return (
-    <div className="min-h-screen bg-cream max-w-lg mx-auto">
-      {/* Progress */}
+    <div className="min-h-screen bg-white max-w-lg mx-auto">
       <div className="px-5 pt-8">
         <div className="flex items-center justify-between mb-4">
-          <button onClick={() => setShowSkipConfirm(true)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-ink transition-colors">
-            <SkipForward size={14} />
-            跳过
-          </button>
-          <span className="text-sm text-muted-foreground">{currentStep + 1} / {STEPS.length}</span>
+          <button onClick={() => setShowSkipConfirm(true)} className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 transition-colors"><SkipForward size={14} />跳过</button>
+          <span className="text-sm text-gray-400">{currentStep + 1} / {STEPS.length}</span>
         </div>
-        <div className="h-1.5 bg-sand/30 rounded-full overflow-hidden">
-          <div className="h-full bg-forest rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
+        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
       </div>
 
-      {/* Step Content */}
       <div className="px-5 pt-6 pb-10 animate-fade-in" key={step.id}>
-        <h2 className="text-2xl font-bold text-ink tracking-tight">{step.title}</h2>
-        <p className="text-sm text-muted-foreground mt-1 mb-6">{step.subtitle}</p>
+        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">{step.title}</h2>
+        <p className="text-sm text-gray-400 mt-1 mb-6">{step.subtitle}</p>
 
         <div className="space-y-3">
           {step.options.map((option) => (
-            <button
-              key={option.id}
-              onClick={() => handleSelect(option.id)}
-              className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 ${
-                isSelected(option.id)
-                  ? 'bg-forest text-white ring-0 shadow-md scale-[1.02]'
-                  : 'bg-white ring-1 ring-sand/30 text-ink hover:bg-forest/5'
-              }`}
-            >
+            <button key={option.id} onClick={() => handleSelect(option.id)} className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 ${isSelected(option.id) ? 'bg-blue-600 text-white shadow-md scale-[1.02]' : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
               <span className="text-2xl">{option.icon}</span>
               <div className="flex-1">
                 <p className="text-base font-semibold">{option.name}</p>
-                <p className={`text-sm ${isSelected(option.id) ? 'opacity-70' : 'text-muted-foreground'}`}>
-                  {option.desc}
-                </p>
+                <p className={`text-sm ${isSelected(option.id) ? 'opacity-70' : 'text-gray-400'}`}>{option.desc}</p>
               </div>
-              {isSelected(option.id) && (
-                <div className="w-5 h-5 bg-coral rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-              )}
+              {isSelected(option.id) && <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center"><span className="text-white text-xs">✓</span></div>}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Navigation */}
       <div className="fixed bottom-[90px] left-0 right-0 px-5 max-w-lg mx-auto">
         <div className="flex items-center justify-between">
           {currentStep > 0 ? (
-            <button onClick={() => setCurrentStep(currentStep - 1)} className="flex items-center gap-1 px-4 py-2.5 bg-white ring-1 ring-sand/30 rounded-xl text-sm font-medium text-ink hover:bg-forest/5 transition-colors">
-              <ChevronLeft size={16} />
-              上一步
-            </button>
+            <button onClick={() => setCurrentStep(currentStep - 1)} className="flex items-center gap-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><ChevronLeft size={16} />上一步</button>
           ) : <div />}
-
           {currentStep < STEPS.length - 1 ? (
-            <button onClick={handleNext} className="flex items-center gap-1 px-6 py-2.5 bg-forest text-white rounded-xl text-sm font-semibold hover:bg-forest-deep transition-colors">
-              下一步
-              <ChevronRight size={16} />
-            </button>
+            <button onClick={() => setCurrentStep(currentStep + 1)} className="flex items-center gap-1 px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors">下一步<ChevronRight size={16} /></button>
           ) : (
-            <button onClick={handleFinish} className="flex items-center gap-1 px-6 py-2.5 bg-forest text-white rounded-xl text-sm font-semibold hover:bg-forest-deep transition-colors">
-              完成开启体验
-              <ChevronRight size={16} />
-            </button>
+            <button onClick={handleFinish} className="flex items-center gap-1 px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors">完成开启体验<ChevronRight size={16} /></button>
           )}
         </div>
       </div>
 
-      {/* Skip Confirmation */}
       {showSkipConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
-          <div className="absolute inset-0 bg-ink/30 backdrop-blur-sm" onClick={() => setShowSkipConfirm(false)} />
-          <div className="relative bg-cream rounded-2xl shadow-2xl w-[85%] max-w-sm p-6 animate-slide-in-right">
-            <h2 className="text-lg font-bold text-ink mb-2">确认跳过？</h2>
-            <p className="text-sm text-muted-foreground mb-5">
-              跳过个性化设置后，AI搭配推荐将使用通用方案。后续可在「我的」→「个人资料」随时修改。
-            </p>
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowSkipConfirm(false)} />
+          <div className="relative bg-white rounded-2xl shadow-2xl w-[85%] max-w-sm p-6 animate-slide-in-right">
+            <h2 className="text-lg font-bold text-gray-900 mb-2">确认跳过？</h2>
+            <p className="text-sm text-gray-400 mb-5">跳过个性化设置后，AI搭配推荐将使用通用方案。后续可在「我的」→「个人资料」随时修改。</p>
             <div className="flex gap-3">
-              <button onClick={() => setShowSkipConfirm(false)} className="px-4 py-2.5 bg-white ring-1 ring-sand/30 text-ink rounded-xl text-sm font-medium">
-                继续填写
-              </button>
-              <button onClick={handleSkip} className="px-4 py-2.5 bg-forest text-white rounded-xl text-sm font-semibold">
-                确认跳过
-              </button>
+              <button onClick={() => setShowSkipConfirm(false)} className="px-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium">继续填写</button>
+              <button onClick={handleSkip} className="px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold">确认跳过</button>
             </div>
           </div>
         </div>
